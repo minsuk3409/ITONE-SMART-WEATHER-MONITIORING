@@ -1,0 +1,411 @@
+/* PPT 공통 배치: 지도 + 선택 현장 카드, 하단 날씨/주요특보, 우측 기존 집계. */
+body.hw-dashboard{--hw-line:#E3E8EF;--hw-ink:#1F2937;--hw-muted:#6B7280;min-width:320px}
+.hw-dashboard [hidden]{display:none!important}
+/* 계절별 보조 문구는 자리까지 없애지 않아 지도와 표의 높이가 흔들리지 않게 한다. */
+.hwx-reserved-note{visibility:hidden}
+.hw-dashboard button,.hw-dashboard input,.hw-dashboard select{font-family:inherit}
+.hw-dashboard button{cursor:pointer}
+.hw-dashboard button:disabled{cursor:not-allowed;opacity:.55}
+.hw-dashboard :focus-visible{outline:2px solid #1E6FE0;outline-offset:2px}
+.hwx-sr-only,.hw-dashboard caption.hwx-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.hwx-skip{position:fixed;top:-100px;left:12px;z-index:150;padding:12px;background:#fff}
+.hwx-skip:focus{top:12px}
+.hw-dashboard .hw-wrap{height:100vh;height:100dvh;min-height:600px}
+.hw-dashboard .hw-top{flex:0 0 auto;min-height:52px;height:auto;padding:8px 16px}
+.hw-dashboard .hw-title{white-space:nowrap}
+.hw-dashboard .hw-top-right{gap:12px}
+.hw-dashboard .hw-toggle{display:flex;white-space:nowrap}
+.hw-dashboard .hw-toggle button{padding:6px 12px}
+.hw-dashboard .hw-toggle button+button{border-left:0}
+.hw-dashboard .hw-body{display:flex;flex:1 1 auto;min-height:0;gap:12px;padding:0 12px 12px}
+.hw-dashboard .hw-left{flex:1 1 68%;min-width:0;min-height:0;gap:10px;background:transparent;border-radius:0;box-shadow:none;overflow:auto;scrollbar-width:thin;scrollbar-gutter:stable}
+.hw-dashboard .hw-left-top{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(270px,1fr);flex:1 0 370px;min-width:0;min-height:370px;gap:10px;margin:0;overflow:visible;border-radius:0;box-shadow:none}
+.hwx-map-panel{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;border:1px solid #B8CADA;border-radius:4px}
+.hwx-map-stage{position:relative;flex:1;min-height:0;background:#d8e4ec;isolation:isolate}
+.hw-dashboard .hw-map{position:absolute;inset:0;height:100%;width:100%}
+.hw-dashboard .hw-mapbar{z-index:6;max-width:calc(100% - 20px);left:10px;right:auto;flex-wrap:wrap;gap:4px}
+.hw-dashboard .mapbar-crumb{min-width:0;overflow:hidden;text-overflow:ellipsis;max-width:210px}
+.hw-dashboard .hw-weather-chip{top:auto;right:auto;bottom:12px;left:10px;max-width:calc(100% - 20px);flex-wrap:wrap;font-size:12px}
+.hw-dashboard .hw-weather-chip .wc-time{white-space:normal;overflow-wrap:anywhere}
+.hwx-map-error{position:absolute;inset:40% 24px auto;z-index:7;padding:14px;border:1px solid #e6c787;border-radius:6px;background:#fff8e8;color:#715821;font-size:13px}
+.hwx-weather-panel{flex:0 0 auto;background:#fff;border-radius:4px;overflow:hidden}
+.hwx-weather-heading{min-width:0;flex:1}
+.hw-dashboard .hw-legendbar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;margin-top:0;padding:7px 12px;border-top:0;min-height:36px}
+.hw-dashboard .hw-field-label{display:block;font-size:15px}
+.hw-dashboard .hw-legend{font-size:10px;gap:8px;min-width:0;width:344px;max-width:100%}
+.hw-dashboard .hw-legend li{flex:0 0 74px;min-height:14px;white-space:nowrap}
+.hw-dashboard .hw-legend li:nth-child(2){flex-basis:54px}
+.hw-dashboard .hw-legend li:nth-child(3){flex-basis:64px}
+.hw-dashboard .hw-legend li:nth-child(4),.hw-dashboard .hw-legend li:nth-child(5){flex-basis:34px}
+.hw-dashboard .hw-legend li:nth-child(6){flex-basis:44px}
+.hw-dashboard .hw-legend .dot{width:9px;height:9px}
+.hw-dashboard .hw-widgets{grid-template-columns:repeat(6,minmax(0,1fr))}
+.hw-dashboard .hw-widget .w-head{line-height:1.4;min-height:2.8em}
+.hw-dashboard .hw-gauge svg{max-width:100%}
+.hw-dashboard .hw-rain{height:auto;min-height:74px;flex:1}
+.hw-dashboard .hw-rain .rain-val{overflow-wrap:anywhere}
+.hw-dashboard .hw-rain .g-sub{line-height:1.4;min-height:2.8em}
+.hw-dashboard .hw-rain-period,.hw-dashboard .hw-rain-detail{display:block;min-height:1.4em}
+.hw-dashboard .hw-feels .feels-max{line-height:1.4;min-height:1.4em}
+.hwx-right-rail{flex:0 0 32%;min-width:0;min-height:0;display:flex;flex-direction:column}
+/* 상시는 지역·본부별 체감온도 집계 영역을 접고 지도·현장정보가 남은 폭을 사용한다. */
+#hwShell[data-season="def"] #hwxRightRail{display:none}
+.hw-dashboard .hw-right{flex:1 1 auto;width:100%;max-width:none;min-height:0;overflow:auto;padding:10px;border-radius:8px;scrollbar-gutter:stable}
+.hw-dashboard .hw-right.hw-layout-alert{overflow:auto}
+.hw-dashboard #hwRegionPanel{flex:19 0 auto}
+.hw-dashboard #hwHqPanel{flex:7 0 auto}
+.hw-dashboard .hw-right.hw-layout-alert #hwRegionPanel{flex:19 0 auto;min-height:auto;margin-bottom:10px;padding-bottom:0;border-bottom:0}
+.hw-dashboard .hw-agg{min-width:0;flex-shrink:0}
+.hw-agg>.hwx-table-scroll{display:flex;flex:1 0 auto;overflow:visible}
+.hw-agg>.hwx-table-scroll>*{width:100%}
+.hw-dashboard .hw-agg-table{min-height:100%}
+.hw-dashboard .hw-agg-table th,.hw-dashboard .hw-agg-table td{height:26px}
+/* 상시의 2줄 임계값과 계절별 1줄 임계값에 같은 헤더 공간을 사용한다. */
+.hw-dashboard .hw-agg-table thead th{height:calc(var(--hw-header-lines,2) * 16px + 8px);line-height:16px}
+.hw-dashboard .hw-agg h2{font-size:16px}
+.hw-dashboard .hw-agg .hwx-panel-head{padding:0;border:0;margin-bottom:8px}
+.hw-dashboard .hw-agg .hwx-panel-head h2{margin:0}
+.hwx-panel-head{display:flex;flex:0 0 auto;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid var(--hw-line)}
+.hwx-panel-head h2{margin:0;font-size:15px;font-weight:600}
+.hwx-text-button{border:0;background:none;padding:3px;color:#3566a0;font-size:11px;white-space:nowrap}
+.hwx-text-button:hover{text-decoration:underline}
+.hwx-footnote{margin:0;padding:6px 12px;color:var(--hw-muted);font-size:11px;line-height:1.45}
+.hwx-muted{color:var(--hw-muted);font-size:11px}
+.hwx-empty{margin:0;padding:10px 12px;color:var(--hw-muted);font-size:12px;line-height:1.5}
+.hwx-notice{flex:0 0 auto;margin:8px 12px 0;padding:8px 12px;background:#fff8e8;border:1px solid #e6c787;border-radius:6px;color:#715821;font-size:12px}
+.hwx-error-notice{background:#fff0ef;border-color:#e0b4b4;color:#953939}
+/* 선택 현장 정보는 지도와 나란히 고정한다. 긴 현장명과 다중 특보는 카드 안에서 스크롤한다. */
+.hwx-table-scroll{min-width:0;overflow-x:auto}
+.hwx-detail{display:grid;grid-template-rows:minmax(88px,.8fr) minmax(152px,1.7fr) minmax(110px,1fr);gap:10px;min-width:0;min-height:0}
+.hwx-detail .hwx-panel{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff;border:1px solid var(--hw-line);border-radius:8px;overflow:hidden}
+.hwx-detail .hwx-panel-head{border-bottom:0}
+.hwx-selected-alerts{flex:1;min-height:0;overflow:auto;padding:0 12px 8px;scrollbar-gutter:stable}
+.hwx-selected-alerts>.hwx-empty{padding:4px 0}
+.hwx-selected-alert-line{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:8px;padding:7px 0}
+.hwx-selected-alert-line+.hwx-selected-alert-line{border-top:1px solid var(--hw-line)}
+.hwx-selected-alert-line strong{font-size:16px;overflow-wrap:anywhere}
+.hwx-alert-state{font-size:12px;color:var(--hw-muted);white-space:nowrap}
+.hwx-unknown-alert{margin:4px 0;color:var(--hw-muted);font-size:12px;line-height:1.5}
+.hwx-icon-message{display:flex;align-items:center;gap:8px}
+.hwx-selected-alerts .hwx-icon-message{min-height:40px}
+.hwx-selected-alerts .hwx-icon-message>span{font-size:13px;font-weight:600}
+.hwx-report-line{display:flex;flex-direction:column;gap:3px;margin:6px 0;padding:6px 0;border-top:1px solid var(--hw-line);overflow-wrap:anywhere}
+.hwx-report-line strong{font-size:12px;line-height:1.45;font-weight:600}
+.hwx-report-line small{font-size:10px;line-height:1.45;color:var(--hw-muted)}
+.hwx-report-note{margin:4px 0;font-size:11px;line-height:1.45;color:var(--hw-muted)}
+.hwx-selected-alerts>.hwx-report-note{display:block}
+.hwx-pending-count{font-size:11px;font-weight:400;color:var(--hw-muted);line-height:1.45}
+.hwx-season-note{flex:0 0 auto;background:#FFF8E8;color:#80622D;border-radius:4px}
+.hwx-no-alert{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px;color:var(--hw-muted)}
+.hwx-site-info{flex:1;min-height:0;overflow:auto;margin:0;padding:2px 16px 12px;display:grid;grid-template-columns:1fr 1fr;align-content:safe center;gap:12px;font-size:15px}
+.hwx-site-info>div{min-width:0}
+.hwx-site-name,.hwx-site-address{grid-column:1/-1}
+.hwx-site-info dt{color:var(--hw-ink);font-size:12px;font-weight:600}
+.hwx-site-info dd{margin:4px 0 0;color:var(--hw-muted);font-weight:600;line-height:1.45;overflow-wrap:anywhere}
+.hwx-air-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.hwx-air-grid>.hwx-empty{grid-column:1/-1}
+.hwx-air-panel .hwx-air-grid{flex:1;min-height:0;align-items:safe center;overflow:auto}
+.hwx-air-item{min-width:0;padding:4px 12px;display:flex;align-items:center;gap:8px}
+.hwx-air-item+.hwx-air-item{border-left:1px solid var(--hw-line)}
+.hwx-air-item>div{min-width:0}
+.hwx-icon{display:inline-block;width:40px;height:40px;flex-shrink:0;vertical-align:middle;overflow:visible}
+.hwx-air-icon{width:56px;height:56px;color:#94A0AE}
+.hwx-air-icon[data-air="good"]{color:#3386C5}.hwx-air-icon[data-air="normal"]{color:#4AAD79}.hwx-air-icon[data-air="bad"]{color:#E89A37}.hwx-air-icon[data-air="verybad"]{color:#D75550}
+.hwx-air-name,.hwx-air-grade{color:var(--hw-muted);font-size:11px}
+.hwx-air-grade{font-weight:700;margin:2px 0}
+.hwx-air-item[data-air="good"] .hwx-air-grade{color:#2876B1}.hwx-air-item[data-air="normal"] .hwx-air-grade{color:#328956}
+.hwx-air-item[data-air="bad"] .hwx-air-grade{color:#A36A17}.hwx-air-item[data-air="verybad"] .hwx-air-grade{color:#B83C38}
+.hwx-air-value{font-size:20px;font-weight:600}
+.hwx-air-value small{margin-left:3px;font-size:10px;font-weight:400}
+.hwx-air-panel .hwx-footnote{flex:0 0 auto;max-height:42px;overflow:auto;font-size:10px;overflow-wrap:anywhere}
+.hwx-major-alert-panel{flex:0 0 auto;background:#fff;border-radius:4px;overflow:hidden}
+.hwx-major-alert-panel .hwx-panel-head{border-bottom:0;padding:9px 12px 5px}
+.hwx-major-alert-panel .hwx-panel-head h2{font-size:13px}
+.hw-dashboard .hwx-major-alerts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:6px 12px;min-height:64px;background:#fff;border:0}
+.hwx-major-alerts>.hwx-empty{grid-column:1/-1;padding:8px 0}
+.hwx-alert-row{width:100%;display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--hw-line);border-radius:6px;background:#fff;text-align:left;color:var(--hw-ink)}
+.hwx-alert-row:hover{background:#F4F7FB;border-color:#B8CADA}
+/* 종류는 그림·색으로, 발효 여부와 등급은 옆의 문구로 구분한다. 회색은 미확인이다. */
+.hwx-alert-symbol{color:#A87622}
+.hwx-icon[data-icon="heat"]{color:#EF644E}
+.hwx-icon[data-icon="cold"],.hwx-icon[data-icon="snow"]{color:#3488D6}
+.hwx-icon[data-icon="rain"]{color:#438ECC}
+.hwx-icon[data-icon="wind"],.hwx-icon[data-icon="sea"]{color:#328F99}
+.hwx-icon[data-icon="typhoon"]{color:#8265B6}
+.hwx-icon[data-icon="dry"]{color:#BC8735}
+.hwx-icon[data-icon="dust"]{color:#A48A5A}
+.hwx-icon[data-icon="clear"]{color:#548C3E}
+.hwx-icon[data-icon="unknown"],.hwx-icon[data-state="unknown"]{color:#94A0AE}
+.hwx-rain-symbol{display:block;margin:0 auto;width:36px;height:36px}
+.hw-dashboard .rain-ico .hwx-precip-icon{display:block;width:32px;height:32px;margin:0 auto}
+.hwx-alert-info{flex:1;min-width:0}
+.hwx-alert-name{display:block;font-size:12px;font-weight:600}
+.hwx-alert-regions{display:block;font-size:11px;color:var(--hw-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hwx-alert-count{font-size:18px}
+.hwx-alert-count small{font-size:11px;margin-left:3px}
+.hwx-major-alerts .hwx-alert-row{display:grid;grid-template-columns:40px minmax(0,1fr) auto;grid-template-rows:minmax(18px,auto) minmax(16px,auto) minmax(15px,auto);gap:5px 6px;min-width:0;min-height:78px}
+.hwx-major-alerts .hwx-alert-symbol{grid-column:1;grid-row:1/3;text-align:center}
+.hwx-major-alerts .hwx-alert-info{display:contents}
+.hwx-major-alerts .hwx-alert-name{grid-column:2;grid-row:1;overflow-wrap:anywhere}
+.hwx-major-alerts .hwx-alert-count{grid-column:3;grid-row:1;white-space:nowrap;font-size:16px}
+.hwx-major-alerts .hwx-alert-regions{grid-column:2/4;grid-row:2;line-height:1.45}
+.hwx-major-card .hwx-pending-count{display:block}
+.hwx-major-alerts .hwx-major-card .hwx-alert-symbol{grid-row:1/4}
+.hwx-major-alerts .hwx-report-note{grid-column:2/4;grid-row:3;margin:0;font-size:10px}
+.hwx-major-alerts .hwx-pending-count{grid-column:3;grid-row:1;font-size:12px;white-space:nowrap}
+/* 실제 지도/게이지/집계는 기존 렌더러. 신규 UI는 추가정보를 담당한다. */
+#hwShell[data-source="legacy"] .hwx-managed,
+#hwShell[data-renderer="original"] .hwx-managed{display:none!important}
+#hwShell[data-source="bridge"]:not([data-renderer="original"]) .hwx-legacy{display:none!important}
+.hwx-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px}
+.hwx-table th,.hwx-table td{border:1px solid var(--hw-line);text-align:center;padding:4px}
+.hwx-table th{background:#F4F7FB}
+.hwx-table th:first-child{width:25%}
+.hwx-table-overview th:first-child{width:36%}
+.hwx-table button{display:block;width:100%;border:0;background:none;color:inherit;font:inherit;padding:1px 0}
+.hwx-table button:hover{background:#EDF5FC}
+.hwx-total-row td{background:#DCE9F5;font-weight:700}
+.hwx-grade,.hwx-dot,[data-grade]{--grade:#9E9E9E}
+[data-grade="alert"]{--grade:#E53935}
+[data-grade="danger"]{--grade:#FB8C00}
+[data-grade="caution"]{--grade:#FDD835}
+[data-grade="attention"]{--grade:#1E88E5}
+[data-grade="normal"]{--grade:#7CB342}
+.hwx-table th[data-grade]{background:var(--grade);color:#1F2937}
+.hwx-table th[data-grade="alert"],.hwx-table th[data-grade="danger"]{color:#fff}
+.hwx-dot{display:inline-block;width:11px;height:11px;flex-shrink:0;border-radius:50%;background:var(--grade)}
+.hwx-grade{padding:2px 6px;border-radius:8px;background:var(--grade);color:#1F2937;font-size:11px}
+/* 추가 현황 목록 팝업. 기존 팝업과 이벤트/ID를 공유하지 않는다. */
+.hwx-modal{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(17,24,39,.4)}
+.hwx-modal-box{display:flex;flex-direction:column;width:590px;max-width:100%;max-height:85vh;background:#fff;border-radius:8px;overflow:hidden}
+.hwx-modal-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#F4F7FB;border-bottom:1px solid var(--hw-line)}
+.hwx-modal-head h2{margin:0;font-size:18px}
+.hwx-section-kicker{color:var(--hw-muted);font-size:10px}
+.hwx-icon-button{border:0;background:none;font-size:24px;color:var(--hw-muted)}
+.hwx-modal-search{padding:10px 16px;border-bottom:1px solid var(--hw-line)}
+.hwx-modal-search input{width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:6px}
+.hwx-modal-search p{margin:6px 0 0}
+.hwx-modal-body{min-height:80px;overflow:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.hwx-field-button{display:flex;align-items:center;gap:10px;flex-shrink:0;width:100%;padding:10px;border:1px solid var(--hw-line);border-radius:6px;background:#fff;color:var(--hw-ink);text-align:left}
+.hwx-field-button:hover{background:#EDF5FC}
+.hwx-field-main{min-width:0;flex:1}
+.hwx-field-main strong,.hwx-field-main small{display:block;overflow-wrap:anywhere}
+.hwx-field-main strong{font-size:13px}
+.hwx-field-main small{font-size:11px;color:var(--hw-muted)}
+.hwx-field-value{text-align:right}
+.hwx-field-value strong{display:block;margin-bottom:4px;font-size:18px}
+.hwx-rule-table{width:100%;border-collapse:collapse;font-size:12px}
+.hwx-rule-table th,.hwx-rule-table td{border:1px solid var(--hw-line);padding:8px;text-align:left}
+.hwx-rule-note{font-size:12px;color:var(--hw-muted);line-height:1.6}
+/* 현재 발효 현장과 참고 발표이력은 상세에서도 분리한다. */
+.hwx-current-alert-fields{display:flex;flex-direction:column;gap:6px;list-style:none;margin:0 0 8px;padding:0}
+.hwx-current-alert-fields .hwx-field-button{align-items:flex-start;flex-direction:column;gap:4px;overflow-wrap:anywhere}
+.hwx-current-alert-fields small{color:var(--hw-muted);font-size:11px}
+.hwx-report-history{margin-top:8px;border-top:1px solid var(--hw-line);padding-top:12px}
+.hwx-report-history>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--hw-muted);padding:4px 0}
+.hwx-report-history>summary:focus-visible{outline:2px solid #2563EB;outline-offset:3px}
+.hw-dashboard .hw-modal{z-index:125}
+@media(max-width:1400px){
+ .hw-dashboard .hw-title{font-size:18px}.hw-dashboard .hw-top{gap:10px}.hw-dashboard .hw-top-right{gap:8px}
+ .hw-dashboard .hw-datetime{font-size:12px;padding:5px 8px}.hw-dashboard .hw-toggle button{padding:6px 9px;font-size:12px}
+ .hw-dashboard .hw-musa-btn{font-size:11px;padding:6px 8px}
+ .hw-dashboard .hw-left-top{grid-template-columns:minmax(0,1.6fr) minmax(270px,1fr)}
+ .hw-dashboard .hw-agg h2{font-size:16px}.hw-dashboard .hw-agg-table{font-size:11px}
+ .hw-dashboard .hw-agg-table{--hw-header-lines:4}
+ .hw-dashboard .hw-agg-table thead th{font-size:10px;padding-left:2px;padding-right:2px}
+ .hw-dashboard .hw-agg-table th:first-child,.hw-dashboard .hw-agg-table td:first-child{width:25%}
+ .hwx-site-info{font-size:14px;padding:2px 12px 10px;gap:10px}
+ .hwx-air-item{padding:4px 8px;gap:6px}.hwx-air-icon{width:44px;height:44px}.hwx-air-value{font-size:18px}
+ .hwx-major-alerts .hwx-alert-row{grid-template-columns:32px minmax(0,1fr) auto;padding:7px;column-gap:4px}
+ .hwx-major-alerts .hwx-alert-symbol{width:32px;height:32px}
+ .hwx-major-alerts .hwx-alert-count{font-size:14px}.hwx-major-alerts .hwx-alert-name{font-size:11px}
+ .hwx-major-alerts .hwx-alert-regions{font-size:10px}
+}
+@media(max-width:1199px){
+ .hw-dashboard .hw-top{flex-wrap:wrap}.hw-dashboard .hw-datetime{display:none}.hw-dashboard .hw-title{font-size:17px}
+ .hw-dashboard .hw-top-right{flex-wrap:wrap}.hwx-right-rail{flex-basis:36%}.hw-dashboard .hw-left{flex-basis:64%}
+ .hw-dashboard .hw-left-top{grid-template-columns:minmax(0,1.1fr) minmax(230px,1fr)}
+ .hw-dashboard .hw-legend{font-size:10px}.hw-dashboard .hw-field-label{font-size:13px}
+ .hw-dashboard .hw-weather-chip{font-size:11px}.hw-dashboard .mapbar-crumb{max-width:150px}
+ .hw-dashboard .hw-agg>.hwx-table-scroll{overflow-x:auto}
+ .hw-dashboard .hw-agg-table{--hw-header-lines:2;min-width:440px}
+ .hw-dashboard .hw-agg-table thead th{white-space:nowrap}
+ .hwx-selected-alert-line{gap:5px;grid-template-columns:32px minmax(0,1fr) auto}.hwx-selected-alert-line strong{font-size:13px}
+ .hwx-selected-alerts .hwx-alert-symbol{width:32px;height:32px}
+ .hwx-air-item{gap:4px;padding:4px 6px}.hwx-air-icon{width:36px;height:36px}.hwx-air-value{font-size:16px}
+ .hwx-air-name{font-size:10px}.hwx-major-alerts .hwx-alert-row{grid-template-columns:28px minmax(0,1fr) auto}
+ .hwx-major-alerts .hwx-alert-symbol{width:28px;height:28px}.hwx-major-alerts .hwx-alert-count{font-size:12px}
+}
+@media(min-width:801px) and (max-height:820px){
+ .hw-dashboard .hw-top{min-height:46px;padding-top:6px;padding-bottom:6px}
+ .hw-dashboard .hw-body{gap:10px;padding:0 10px 10px}.hw-dashboard .hw-left{gap:8px}
+ .hw-dashboard .hw-left-top{flex-basis:340px;min-height:340px;gap:8px}
+ .hwx-detail{grid-template-rows:minmax(82px,.8fr) minmax(138px,1.6fr) minmax(104px,1fr);gap:8px}
+ .hwx-panel-head{padding:7px 10px}.hwx-panel-head h2{font-size:14px}
+ .hwx-site-info{align-content:start;font-size:13px;gap:6px;padding:0 10px 8px}.hwx-site-info dt{font-size:11px}.hwx-site-info dd{margin-top:2px}
+ .hwx-selected-alerts{padding:0 10px 6px}.hwx-selected-alert-line{padding:4px 0}.hwx-selected-alert-line strong{font-size:14px}
+ .hw-dashboard .hw-legendbar{padding:5px 10px}.hw-dashboard .hw-field-label{font-size:13px}
+ .hw-dashboard .hw-widgets{min-height:100px;padding:6px 10px;gap:6px}.hw-dashboard .hw-widget{padding:5px 4px}
+ .hw-dashboard .hw-gauge svg{width:68px;height:60px}.hw-dashboard .hw-rain{height:auto;min-height:70px}
+ .hw-dashboard .hw-feels .feels-val{font-size:22px;margin:4px 0}.hw-dashboard .hw-widget .w-head{font-size:11px}
+ .hwx-footnote{padding:4px 10px;font-size:10px}.hwx-major-alert-panel .hwx-panel-head{padding:7px 10px 3px}
+ .hw-dashboard .hwx-major-alerts{padding:4px 10px;min-height:60px}
+ .hw-dashboard .hw-right{padding:8px}.hw-dashboard .hw-agg{margin-bottom:8px}
+ .hw-dashboard .hw-agg h2{font-size:14px;margin-bottom:6px}.hw-dashboard .hw-agg .hwx-panel-head{margin-bottom:6px}
+ .hw-dashboard .hw-agg-table th,.hw-dashboard .hw-agg-table td{height:20px;padding:2px 4px;font-size:10px}
+ .hw-dashboard .hw-agg-table thead th{height:calc(var(--hw-header-lines,2) * 14px + 6px);line-height:14px}
+ .hw-dashboard .hw-agg-table .hw-wt{width:12px;height:12px;margin:0 2px}.hw-dashboard .hw-badge{font-size:8px;padding:1px 3px;margin-left:2px}
+}
+@media(max-width:800px){
+ .hw-dashboard .hw-wrap{height:auto;min-height:100vh}.hw-dashboard .hw-body{flex-direction:column;flex:none;padding:8px;gap:10px}
+ .hw-dashboard .hw-left{flex:none;overflow:visible}.hw-dashboard .hw-left-top{flex:none;min-height:410px;grid-template-columns:minmax(0,1.3fr) minmax(250px,1fr)}
+ .hwx-map-panel{min-height:410px}.hwx-right-rail{flex:none}
+ .hw-dashboard .hw-right{flex:none;min-height:0;overflow:visible}.hw-dashboard .hw-top-right{margin-left:0}.hw-dashboard .hw-top{padding:10px 12px}
+ .hw-dashboard .hw-agg-table th,.hw-dashboard .hw-agg-table td{height:28px}
+ .hw-dashboard .hw-agg-table thead th{height:calc(var(--hw-header-lines,2) * 16px + 8px);line-height:16px}
+ .hwx-major-alerts .hwx-alert-row{grid-template-columns:28px minmax(0,1fr) auto}
+}
+@media(max-width:520px){
+ .hw-dashboard .hw-top-right{gap:6px}.hw-dashboard .hw-toggle button{padding:6px 8px}.hw-dashboard .hw-title{font-size:18px}
+ .hw-dashboard .hw-left-top{display:flex;flex-direction:column;min-height:0}.hwx-map-panel{height:320px;min-height:320px}
+ .hwx-detail{grid-template-rows:auto auto auto;gap:8px}.hwx-detail .hwx-panel{min-height:100px}.hwx-site-info{gap:10px}
+ .hwx-selected-alerts{max-height:190px}.hwx-air-item{padding:8px 12px}.hwx-air-icon{width:56px;height:56px}.hwx-air-value{font-size:20px}
+ .hw-dashboard .hw-widgets{grid-template-columns:repeat(3,minmax(0,1fr));padding:8px}
+ .hw-dashboard .hwx-major-alerts{grid-template-columns:1fr}.hwx-major-alerts .hwx-alert-name{font-size:12px}.hwx-major-alerts .hwx-alert-regions{font-size:11px}
+ .hw-dashboard .hw-legendbar{grid-template-columns:minmax(0,1fr)}.hw-dashboard .hw-legend{justify-content:flex-start}.hw-dashboard .hw-right{padding:10px}
+ .hw-dashboard .hw-agg-table th,.hw-dashboard .hw-agg-table td{padding:3px 2px;font-size:10px}
+ .hwx-modal{padding:10px}
+}
+@media(prefers-reduced-motion:reduce){.hw-marker-sel::after{animation:none}}
+
+/* 대우: 기존 기상 게이지 6개와 현재 미세먼지 2개를 한 영역에서 보여준다. */
+.hwx-weather-air,.hwx-weather-air-time,.hwx-other-field-panel,.hwx-weather-title{display:none}
+.hwx-weather-sources{display:contents}
+/* 대우는 DID 주소/현장정보 카드를 사용하지 않는다. 현장명은 기상정보 머리글에 유지한다. */
+#hwShell[data-company="DW1"] .hwx-air-panel,
+#hwShell[data-company="DW1"] .hwx-site-panel{display:none}
+#hwShell[data-company="DW1"] .hwx-detail{grid-template-rows:auto;align-content:start}
+#hwShell[data-company="DW1"] #hwxSelectedAlertPanel{height:160px}
+#hwShell[data-company="DW1"] #hwxSelectedAlertPanel .hwx-panel-head h2{font-size:18px;font-weight:700}
+#hwShell[data-company="DW1"] .hwx-weather-title{display:flex;justify-content:center;padding:8px 12px}
+/* 여러 특보가 줄바꿈되어도 첫 항목이 스크롤 영역 위로 밀려나지 않게 위에서부터 배치한다. */
+#hwShell[data-company="DW1"] .hwx-selected-alerts{display:flex;align-items:center;align-content:flex-start;flex-wrap:wrap;gap:10px}
+#hwShell[data-company="DW1"] .hwx-selected-alert-line{display:flex;gap:12px;border:1px solid var(--hw-line);border-radius:6px;padding:10px 12px}
+#hwShell[data-company="DW1"] .hwx-selected-alert-line+.hwx-selected-alert-line{border-top:1px solid var(--hw-line)}
+#hwShell[data-company="DW1"] .hwx-alert-highlight{flex:1 1 240px;min-width:0;max-width:100%;min-height:76px;background:#F8FAFD}
+#hwShell[data-company="DW1"] .hwx-selected-alert-line .hwx-icon{width:48px;height:48px}
+#hwShell[data-company="DW1"] .hwx-selected-alert-line strong{flex:1;min-width:0;font-size:24px;font-weight:700;line-height:1.25}
+#hwShell[data-company="DW1"] .hwx-selected-alert-line .hwx-alert-state{display:inline-flex;flex-shrink:0;align-items:center;padding:4px 8px;border-radius:12px;font-size:14px;font-weight:700;background:#EAF0F5;color:#526278}
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="advisory"]{background:#FFF9EE;border-color:#E7C98D}
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="advisory"] strong{color:#946017}
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="advisory"] .hwx-alert-state{background:#F6E8C9;color:#946017}
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="warning"],
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="severe"]{background:#FFF4F2;border-color:#E5B8B1}
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="warning"] strong,
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="severe"] strong{color:#B73D32}
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="warning"] .hwx-alert-state,
+#hwShell[data-company="DW1"] .hwx-alert-highlight[data-level="severe"] .hwx-alert-state{background:#F9DDD8;color:#B73D32}
+#hwShell[data-company="DW1"] .hwx-selected-alerts .hwx-unknown-alert,
+#hwShell[data-company="DW1"] .hwx-selected-alerts .hwx-no-alert{width:100%;margin:0}
+#hwShell[data-company="DW1"] .hwx-selected-alerts .hwx-no-alert{color:#328956;font-weight:600}
+/* 시안의 상태 표현: 선명한 원형 아이콘 옆에 큰 제목/짧은 설명 두 줄만 배치한다. */
+#hwShell[data-company="DW1"] .hwx-status-message{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:center;gap:10px;width:100%;min-height:76px;padding:2px 0}
+#hwShell[data-company="DW1"] .hwx-status-icon{width:52px;height:52px;flex-shrink:0}
+#hwShell[data-company="DW1"] .hwx-status-copy{min-width:0;display:flex;flex-direction:column;gap:3px}
+#hwShell[data-company="DW1"] .hwx-status-copy strong{font-size:clamp(22px,1.6vw,28px);font-weight:700;line-height:1.2;color:#35445A;overflow-wrap:anywhere}
+#hwShell[data-company="DW1"] .hwx-status-copy span{font-size:15px;line-height:1.35;color:#374151;overflow-wrap:anywhere}
+#hwShell[data-company="DW1"] .hwx-status-message[data-state="clear"] strong{color:#089B53}
+#hwShell[data-company="DW1"] .hwx-status-message[data-state="pending"] strong,
+#hwShell[data-company="DW1"] .hwx-status-message[data-state="attention"] strong{color:#9B650D}
+#hwShell[data-company="DW1"] .hwx-status-message[data-state="error"] strong{color:#BF3936}
+#hwShell[data-company="DW1"] .hwx-selected-alert-note{flex-basis:100%;margin:0;color:#64748B;font-size:12px}
+#hwShell[data-company="DW1"] #hw-weather-databox{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;padding:8px 10px;background:#F4F7FB;border-top:1px solid var(--hw-line)}
+#hwShell[data-company="DW1"] #hwWidgets,
+#hwShell[data-company="DW1"] #hwxWidgets,
+#hwShell[data-company="DW1"] .hwx-weather-air{display:contents}
+#hwShell[data-company="DW1"] #hw-weather-databox>.hw-widgets>.hw-todo{grid-column:1/7}
+#hwShell[data-company="DW1"] #hw-weather-databox .hw-widget{min-width:0;padding:6px 3px}
+#hwShell[data-company="DW1"] #hw-weather-databox .w-head{font-size:11px;min-height:2.8em}
+#hwShell[data-company="DW1"] #hw-weather-databox .hw-gauge{width:100%}
+#hwShell[data-company="DW1"] #hw-weather-databox .hw-gauge svg{width:76px;height:auto;aspect-ratio:1;max-width:100%}
+#hwShell[data-company="DW1"] .hwx-air-widget .w-head span{display:block}
+#hwShell[data-company="DW1"] .hwx-weather-air-time{display:block}
+.hwx-air-widget[data-air="good"] .g-sub{color:#2876B1}
+.hwx-air-widget[data-air="normal"] .g-sub{color:#328956}
+.hwx-air-widget[data-air="bad"] .g-sub{color:#A36A17}
+.hwx-air-widget[data-air="verybad"] .g-sub{color:#B83C38}
+
+/* 대우 상시 설계: 왼쪽 지도 / 오른쪽 선택 현장 특보·기상정보·지역 검색.
+   기존 DOM/지도/계절 집계표는 유지하고 배치만 전환한다. */
+/* 설계의 특보/기상/지역 높이 비율을 18:50:32에 맞추고, 낮은 화면에서는 스크롤로 카드·출처 공간을 보존한다. */
+#hwShell[data-company="DW1"][data-season="def"] .hw-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(160px,.9fr) minmax(330px,2.5fr) minmax(154px,1.6fr);gap:10px;overflow:auto}
+#hwShell[data-company="DW1"][data-season="def"] .hw-left,
+#hwShell[data-company="DW1"][data-season="def"] .hw-left-top,
+#hwShell[data-company="DW1"][data-season="def"] .hwx-detail{display:contents}
+#hwShell[data-company="DW1"][data-season="def"] #hwMapPanel{grid-column:1;grid-row:1/4;min-height:0}
+#hwShell[data-company="DW1"][data-season="def"] #hwxSelectedAlertPanel{grid-column:2;grid-row:1;height:auto;border-radius:6px}
+#hwShell[data-company="DW1"][data-season="def"] #hwxSelectedAlertPanel .hwx-panel-head{padding:12px 14px 8px}
+#hwShell[data-company="DW1"][data-season="def"] #hwxSelectedAlertPanel .hwx-muted{display:none}
+#hwShell[data-company="DW1"][data-season="def"] #hwxSelectedAlertPanel .hwx-text-button{padding:4px 8px;background:#F4F7FB;border-radius:4px}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-selected-alerts{padding:4px 14px 12px}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-selected-alert-line{min-height:76px;padding:10px 12px}
+#hwShell[data-company="DW1"][data-season="def"] #hwWeatherPanel{grid-column:2;grid-row:2;display:flex;flex-direction:column;min-height:0;border:1px solid var(--hw-line);border-radius:6px;overflow:auto}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-weather-title{padding:10px 14px}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-weather-title h2{font-size:16px}
+#hwShell[data-company="DW1"][data-season="def"] .hw-legendbar{flex:0 0 auto;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:10px 14px}
+#hwShell[data-company="DW1"][data-season="def"] .hw-field-label{font-size:15px}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox{flex:1 0 auto;min-height:0;padding:10px;gap:8px;align-items:stretch;background:#F8FAFD}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .hw-widget{min-height:138px;padding:10px 4px;border-radius:6px}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .w-head{flex:0 0 32px;min-height:32px;margin:0;font-size:12px;line-height:16px}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .hw-gauge,
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .hw-rain{flex:1;justify-content:center;width:100%}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .hw-gauge svg{width:100%;max-width:104px}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .g-sub{margin-top:0;font-size:12px;line-height:18px}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .hwx-precip-icon{width:40px;height:40px}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .hw-feels{box-shadow:none!important;justify-content:flex-start}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .hw-feels .w-head{margin-bottom:auto}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .feels-val{font-size:clamp(20px,1.8vw,30px);margin:6px 0}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .feels-unit{font-size:11px}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .feels-max{font-size:10px}
+#hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox .feels-badge{margin-bottom:auto}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-weather-sources{display:flex;flex:0 0 auto;flex-direction:column;gap:3px;padding:8px 14px;border-top:1px solid var(--hw-line)}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-weather-sources .hwx-footnote{padding:0;font-size:12px;line-height:1.5;color:#64748B}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-major-alert-panel{display:none}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-other-field-panel{display:flex;flex-direction:column;grid-column:2;grid-row:3;min-height:0;background:#fff;border:1px solid var(--hw-line);border-radius:6px;overflow:hidden}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-other-field-panel .hwx-panel-head{justify-content:center;padding:10px 14px}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-region-buttons{grid-template-rows:repeat(2,minmax(40px,52px));gap:8px;padding:14px}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-region-buttons button{font-size:14px;background:#fff;border-color:#DCE4ED}
+#hwShell[data-company="DW1"][data-season="def"] .hwx-region-buttons button:hover{background:#EDF5FC;border-color:#B8CADA}
+.hwx-region-buttons{flex:1;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px 6px;padding:12px;align-content:center}
+.hwx-region-buttons button{min-width:0;min-height:36px;border:1px solid var(--hw-line);border-radius:5px;background:#F8FAFD;color:var(--hw-ink);font-size:13px;white-space:nowrap}
+.hwx-region-buttons button:hover{background:#EDF5FC;border-color:#B8CADA}
+@media(max-width:1450px){
+ #hwShell[data-company="DW1"][data-season="def"] .hw-legendbar{grid-template-columns:minmax(0,1fr);gap:4px}
+ #hwShell[data-company="DW1"][data-season="def"] .hw-legend{justify-content:flex-start;width:auto}
+ #hwShell[data-company="DW1"][data-season="def"] #hw-weather-databox{gap:5px;padding:8px}
+}
+@media(max-width:1100px){
+ #hwShell[data-company="DW1"] #hw-weather-databox{gap:4px;padding:8px 6px}
+ #hwShell[data-company="DW1"] .hwx-selected-alert-line{gap:8px;padding:8px 10px}
+ #hwShell[data-company="DW1"] .hwx-selected-alert-line .hwx-icon{width:40px;height:40px}
+ #hwShell[data-company="DW1"] .hwx-selected-alert-line strong{font-size:20px}
+ #hwShell[data-company="DW1"] .hwx-selected-alert-line .hwx-alert-state{font-size:12px;padding:3px 6px}
+ #hwShell[data-company="DW1"] .hwx-status-message{grid-template-columns:46px minmax(0,1fr);gap:8px}
+ #hwShell[data-company="DW1"] .hwx-status-icon{width:46px;height:46px}
+ #hwShell[data-company="DW1"] .hwx-status-copy span{font-size:14px}
+ .hwx-region-buttons{gap:6px 4px;padding:10px}.hwx-region-buttons button{font-size:12px}
+}
+@media(max-width:800px){
+ #hwShell[data-company="DW1"][data-season="def"] .hw-body{grid-template-columns:minmax(0,1fr);grid-template-rows:340px auto auto auto;overflow:visible}
+ #hwShell[data-company="DW1"][data-season="def"] #hwMapPanel{grid-column:1;grid-row:1;min-height:0}
+ #hwShell[data-company="DW1"][data-season="def"] #hwxSelectedAlertPanel{grid-column:1;grid-row:2;min-height:160px}
+ #hwShell[data-company="DW1"][data-season="def"] #hwWeatherPanel{grid-column:1;grid-row:3;min-height:330px}
+ #hwShell[data-company="DW1"][data-season="def"] .hwx-other-field-panel{grid-column:1;grid-row:4;min-height:154px}
+}
+@media(max-width:600px){
+ #hwShell[data-company="DW1"] #hw-weather-databox{grid-template-columns:repeat(4,minmax(0,1fr))}
+ #hwShell[data-company="DW1"] #hw-weather-databox>.hw-widgets>.hw-todo{grid-column:1/-1}
+ .hwx-region-buttons{grid-template-columns:repeat(4,minmax(0,1fr))}
+ #hwShell[data-company="DW1"][data-season="def"] .hwx-region-buttons{grid-template-rows:repeat(4,44px)}
+ #hwShell[data-company="DW1"][data-season="def"] .hwx-status-copy strong{font-size:22px}
+}

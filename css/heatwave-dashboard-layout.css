@@ -1,0 +1,287 @@
+/* siteCd selects the presentation only; the existing weather data scope is preserved. */
+.hw-dashboard #hwShell[data-view]{--hw-layout-gap:12px;background:#eef2f6;color:#25334a;font-size:14px;max-width:100%;min-height:600px}
+.hw-dashboard #hwShell[data-view] .hw-body{display:grid;grid-template-columns:minmax(0,2.125fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);align-items:stretch;gap:var(--hw-layout-gap);padding:12px;min-width:0;min-height:0;overflow:auto}
+.hw-dashboard #hwShell[data-view] .hw-left{display:flex;flex-direction:column;flex:none;gap:var(--hw-layout-gap);min-width:0;min-height:0;overflow:visible;scrollbar-gutter:auto;box-shadow:none}
+.hw-dashboard #hwShell[data-view] .hw-left-top{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);grid-template-rows:auto;flex:1 0 auto;gap:var(--hw-layout-gap);min-width:0;min-height:440px;margin:0;overflow:visible;box-shadow:none}
+.hw-dashboard #hwShell[data-view] #hwMapPanel{display:flex;grid-column:auto;grid-row:auto;min-width:0;min-height:400px;height:auto;border:1px solid #c9d5e3;border-radius:8px;overflow:hidden;background:#e5edf4}
+.hw-dashboard #hwShell[data-view] .hwx-map-stage{min-height:400px;flex:1 1 auto}
+.hw-dashboard #hwShell[data-view] .hwx-overview-column{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:var(--hw-layout-gap);min-width:0;min-height:0}
+.hw-dashboard #hwShell[data-view] #hwxOverviewPanel,
+.hw-dashboard #hwShell[data-view] #hwxSelectedAlertPanel,
+.hw-dashboard #hwShell[data-view] #hwxOtherFieldPanel,
+.hw-dashboard #hwShell[data-view] #hwWeatherPanel,
+.hw-dashboard #hwShell[data-view] #hwxMajorAlertPanel{grid-column:auto;grid-row:auto;min-width:0;background:#fff;color:#25334a;border:1px solid #dce3eb;border-radius:8px;box-shadow:0 1px 3px rgba(30,53,80,.05)}
+.hw-dashboard #hwShell[data-view] #hwxOverviewPanel{display:flex;flex-direction:column;flex:0 0 auto;overflow:hidden}
+.hw-dashboard #hwShell[data-view] #hwxSelectedAlertPanel{display:none}
+.hw-dashboard #hwShell[data-view] .hwx-panel-head{min-height:42px;gap:8px;padding:10px 12px;background:#fff;border-bottom:1px solid #e7edf3}
+.hw-dashboard #hwShell[data-view] .hwx-panel-head h2{font-size:15px;line-height:1.4;color:#25334a;font-weight:700}
+.hw-dashboard #hwShell[data-view] .hwx-muted,
+.hw-dashboard #hwShell[data-view] .hwx-footnote{font-size:12px;line-height:1.5;color:#64748b;overflow-wrap:anywhere}
+.hw-dashboard #hwShell[data-view] .hwx-text-button{font-size:13px;line-height:1.4}
+.hw-dashboard #hwShell[data-view] .hwx-overview-content{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:10px;min-width:0;padding:10px;background:#fff}
+.hw-dashboard #hwShell[data-view] .hwx-stats{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0;align-content:start}
+.hw-dashboard #hwShell[data-view] .hwx-stat{display:grid;grid-template-columns:36px minmax(0,1fr);grid-template-rows:auto auto auto;align-items:center;gap:3px 8px;min-width:0;min-height:98px;padding:10px 8px;background:#fff;border:1px solid #dfe6ef;border-radius:7px;text-align:left}
+.hw-dashboard #hwShell[data-view] .hwx-stat-icon{display:flex;align-items:center;justify-content:center;grid-column:1;grid-row:1/3;align-self:center;width:36px;height:36px;min-width:36px;min-height:36px;margin:0;object-fit:contain}
+.hw-dashboard #hwShell[data-view] .hwx-stat>span:not(.hwx-stat-icon){grid-column:2;grid-row:1;font-size:13px;line-height:1.4;color:#526278;overflow-wrap:anywhere}
+.hw-dashboard #hwShell[data-view] .hwx-stat>strong{grid-column:2;grid-row:2;min-width:0;font-size:26px;font-weight:750;line-height:1.2;color:#25334a;white-space:nowrap}
+.hw-dashboard #hwShell[data-view] .hwx-stat>strong>small{margin-left:3px;font-size:12px;font-weight:500;color:#64748b}
+.hw-dashboard #hwShell[data-view] .hwx-stat>small{grid-column:1/-1;grid-row:3;font-size:12px;line-height:1.4;color:#64748b;overflow-wrap:anywhere}
+.hw-dashboard #hwShell[data-view] .hwx-stat--warning{border-color:#eed9ae;background:#fffdf8}
+.hw-dashboard #hwShell[data-view] .hwx-stat--warning>strong{color:#98651a}
+.hw-dashboard #hwShell[data-view] .hwx-stat--danger{border-color:#efcbc6;background:#fffaf9}
+.hw-dashboard #hwShell[data-view] .hwx-stat--danger>strong{color:#c14a3f}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts{display:flex;flex-direction:column;align-items:stretch;gap:7px;min-width:0;background:#fff}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:6px;min-width:0;min-height:58px;padding:8px 6px;background:#fff;border-color:#e2e8f0}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-symbol{width:28px;height:28px}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-info{display:flex;flex-direction:column;gap:3px;min-width:0}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-name{font-size:13px;line-height:1.4;overflow-wrap:anywhere}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-regions{font-size:12px;line-height:1.4}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-count{font-size:20px;line-height:1.3;white-space:nowrap}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-count small{font-size:12px;margin-left:2px}
+.hw-dashboard #hwShell[data-view] .hwx-overview-alerts>.hwx-empty{padding:8px 4px;font-size:13px}
+.hw-dashboard #hwShell[data-view] #hwxOtherFieldPanel{display:flex;flex-direction:column;flex:1 0 auto;min-height:0;overflow:hidden;container:weather-region / inline-size}
+.hw-dashboard #hwShell[data-view] #hwxOtherFieldPanel .hwx-panel-head{justify-content:flex-start;padding:10px 12px}
+.hw-dashboard #hwShell[data-view] #hwxRegionButtons{display:grid;flex:1 0 auto;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:minmax(36px,1fr);align-content:stretch;gap:6px;min-width:0;padding:8px}
+.hw-dashboard #hwShell[data-view] .hwx-region-buttons button{display:flex;align-items:center;justify-content:center;min-width:0;min-height:36px;padding:6px 4px;font-size:13px;line-height:1.4;white-space:nowrap;color:#35445a;border-color:#dce4ed;background:#fff}
+.hw-dashboard #hwShell[data-view] .hwx-region-buttons button:hover{background:#eef5fc;border-color:#9bb9da}
+.hw-dashboard #hwShell[data-view] .hwx-region-buttons button:focus-visible{outline:2px solid #337bc4;outline-offset:-2px;background:#eef5fc}
+@container weather-region (min-width:600px){
+ .hw-dashboard #hwShell[data-view] #hwxRegionButtons{grid-template-columns:repeat(8,minmax(0,1fr))}
+}
+.hw-dashboard #hwShell[data-view] #hwWeatherPanel{display:flex;flex-direction:column;flex:0 0 auto;min-height:0;overflow:hidden}
+.hw-dashboard #hwShell[data-view] .hwx-weather-title{display:flex;justify-content:flex-start;padding:10px 12px}
+.hw-dashboard #hwShell[data-view] .hw-legendbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 12px;margin:0;background:#fff}
+.hw-dashboard #hwShell[data-view] .hw-field-label{font-size:15px;line-height:1.5;white-space:normal;overflow-wrap:anywhere}
+.hw-dashboard #hwShell[data-view] .hw-legend{width:auto;max-width:100%;justify-content:flex-start;gap:6px 10px;font-size:12px}
+.hw-dashboard #hwShell[data-view] .hw-legend li{flex:0 0 auto;min-height:18px}
+.hw-dashboard #hwShell[data-view] .hwx-weather-sources{display:flex;flex-direction:column;flex:0 0 auto;gap:3px;padding:8px 12px;border-top:1px solid #e7edf3;background:#fff}
+.hw-dashboard #hwShell[data-view] .hwx-weather-sources .hwx-footnote{padding:0;font-size:12px}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox{min-width:0;min-height:0;flex:0 0 auto}
+.hw-dashboard #hwShell[data-view][data-company="DW1"] #hw-weather-databox{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;padding:10px;background:#f4f7fb;align-items:stretch}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-widget{min-width:0;min-height:150px;padding:8px 4px;border-radius:7px;background:#fff}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .w-head{flex:0 0 auto;min-height:36px;margin:0;font-size:13px;line-height:18px}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-gauge{flex:1 1 auto;min-width:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-gauge svg{width:92px;height:auto;max-width:100%;aspect-ratio:1}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-rain{flex:1 1 auto;min-height:80px;justify-content:center}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .g-sub{margin-top:0;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-feels{justify-content:flex-start}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-feels .w-head{margin-bottom:auto}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-val{font-size:26px;margin:8px 0}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-max{font-size:12px;line-height:1.4}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-unit{font-size:12px}
+.hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-badge{margin-top:4px;margin-bottom:auto;font-size:12px;line-height:1.5}
+.hw-dashboard #hwShell[data-view] #hwxMajorAlertPanel{display:flex;flex-direction:column;flex:0 0 auto;min-height:0;overflow:hidden}
+.hw-dashboard #hwShell[data-view] #hwxMajorAlertPanel .hwx-panel-head{padding:10px 12px}
+.hw-dashboard #hwShell[data-view] .hwx-major-alerts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px 12px;background:#fff;min-height:0}
+.hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-row{grid-template-columns:36px minmax(0,1fr) auto;min-height:92px;gap:5px 8px;padding:10px 8px}
+.hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-symbol{width:36px;height:36px}
+.hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-name{font-size:14px;line-height:1.4}
+.hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-regions,
+.hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-report-note{font-size:12px;line-height:1.4}
+.hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-count{font-size:20px}
+.hw-dashboard #hwShell[data-view] .hwx-icon>.wx-icon{display:block;width:100%!important;height:100%!important;max-width:100%;max-height:100%;object-fit:contain}
+.hw-dashboard #hwShell[data-view] .hwx-stat-icon>.wx-icon{margin:auto;align-self:center}
+.hw-dashboard #hwShell[data-view] #hwxRightRail{display:flex;flex-direction:column;grid-column:auto;grid-row:auto;min-width:0;min-height:0;overflow:visible}
+.hw-dashboard #hwShell[data-view] #hwRight{display:flex;flex-direction:column;flex:1 1 auto;width:100%;max-width:100%;min-width:0;min-height:0;padding:12px;overflow:visible;scrollbar-gutter:auto;background:#fff;border:1px solid #dce3eb;border-radius:8px}
+.hw-dashboard #hwShell[data-view] #hwRegionPanel,
+.hw-dashboard #hwShell[data-view] #hwHqPanel{flex:0 0 auto;min-height:0;margin:0 0 14px;padding:0;overflow:visible}
+.hw-dashboard #hwShell[data-view] .hw-agg h2{font-size:15px;line-height:1.4;margin:0 0 8px}
+.hw-dashboard #hwShell[data-view] .hw-agg .hwx-panel-head{padding:0 0 8px;min-height:0;margin:0;border:0}
+.hw-dashboard #hwShell[data-view] .hw-agg>.hwx-table-scroll{display:block;flex:0 0 auto;min-width:0;max-width:100%;overflow-x:auto;overflow-y:visible}
+.hw-dashboard #hwShell[data-view] .hw-agg-table{flex:none;width:100%;min-width:0;height:auto;min-height:0;font-size:12px}
+.hw-dashboard #hwShell[data-view] .hw-agg-table th,
+.hw-dashboard #hwShell[data-view] .hw-agg-table td{height:28px;padding:4px 3px;font-size:12px;line-height:1.4}
+.hw-dashboard #hwShell[data-view] .hw-agg-table thead th{height:auto;min-height:44px;line-height:1.4;white-space:normal;font-size:11px}
+.hw-dashboard #hwShell[data-view] .hw-agg-table th:first-child,
+.hw-dashboard #hwShell[data-view] .hw-agg-table td:first-child{width:26%}
+.hw-dashboard #hwShell[data-view] .hw-agg-table .hw-wt{width:16px;height:16px;margin:0 3px;vertical-align:-3px}
+.hw-dashboard #hwShell[data-view] .hw-badge{font-size:10px;margin-left:3px;padding:1px 4px}
+.hw-dashboard #hwShell[data-view="admin"] .hw-body{grid-template-columns:minmax(0,1fr)}
+.hw-dashboard #hwShell[data-view="admin"] .hw-left-top{grid-template-columns:minmax(0,31fr) minmax(0,19fr);min-height:460px}
+.hw-dashboard #hwShell[data-view="admin"][data-season="def"] #hwxRightRail{display:none}
+.hw-dashboard #hwShell[data-view="admin"] .hwx-stat{min-height:94px;grid-template-columns:36px minmax(0,1fr) auto;padding:10px 12px}
+.hw-dashboard #hwShell[data-view="admin"] .hwx-stat>span:not(.hwx-stat-icon){grid-column:2;grid-row:1/3;font-size:14px}
+.hw-dashboard #hwShell[data-view="admin"] .hwx-stat>strong{grid-column:3;grid-row:1/3;font-size:28px}
+.hw-dashboard #hwShell[data-view="admin"] .hwx-stat>small{grid-column:2/-1;grid-row:3}
+
+@media(min-width:1600px){
+ .hw-dashboard #hwShell[data-view] .hwx-stat{grid-template-columns:36px minmax(0,1fr) auto;min-height:94px;padding:10px 12px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat>span:not(.hwx-stat-icon){grid-column:2;grid-row:1/3;font-size:14px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat>strong{grid-column:3;grid-row:1/3;font-size:28px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat>small{grid-column:2/-1;grid-row:3}
+}
+@media(max-width:1450px){
+ .hw-dashboard #hwShell[data-view]{--hw-layout-gap:10px}
+ .hw-dashboard #hwShell[data-view] .hw-body{padding:10px;grid-template-columns:minmax(0,2.03fr) minmax(0,1fr)}
+ .hw-dashboard #hwShell[data-view="admin"] .hw-body{grid-template-columns:minmax(0,1fr)}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-content{gap:7px;padding:8px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat{gap:3px 6px;padding:9px 6px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-row{grid-template-columns:26px minmax(0,1fr) auto;gap:4px;padding:7px 5px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-symbol{width:26px;height:26px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-count{font-size:18px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-gauge svg{width:80px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-val{font-size:24px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-row{grid-template-columns:30px minmax(0,1fr) auto;gap:5px 6px;padding:8px 6px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-symbol{width:30px;height:30px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-name{font-size:13px}
+}
+@media(max-width:1199px){
+ .hw-dashboard #hwShell[data-view] .hw-body{grid-template-columns:minmax(0,1fr)}
+ .hw-dashboard #hwShell[data-view] .hw-left-top{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
+ .hw-dashboard #hwShell[data-view="admin"] .hw-left-top{grid-template-columns:minmax(0,31fr) minmax(0,19fr)}
+ .hw-dashboard #hwShell[data-view] #hwRight{flex:0 0 auto}
+ .hw-dashboard #hwShell[data-view] .hw-agg-table{min-width:480px}
+}
+@media(max-width:800px){
+ .hw-dashboard #hwShell[data-view]{height:auto;min-height:100vh;min-height:100dvh}
+ .hw-dashboard #hwShell[data-view] .hw-top{flex-wrap:wrap;min-width:0;padding:10px 12px;gap:10px}
+ .hw-dashboard #hwShell[data-view] .hw-title{white-space:normal;overflow-wrap:anywhere;font-size:18px;line-height:1.4}
+ .hw-dashboard #hwShell[data-view] .hw-top-right{flex-wrap:wrap;gap:8px;min-width:0;margin-left:0}
+ .hw-dashboard #hwShell[data-view] .hw-body{display:flex;flex-direction:column;flex:none;gap:10px;padding:10px;overflow:visible;grid-template-rows:none}
+ .hw-dashboard #hwShell[data-view] .hw-left{flex:none;width:100%;overflow:visible}
+ .hw-dashboard #hwShell[data-view] .hw-left-top{display:flex;flex-direction:column;flex:none;min-height:0;gap:10px}
+ .hw-dashboard #hwShell[data-view] #hwMapPanel{flex:none;width:100%;height:360px;min-height:360px}
+ .hw-dashboard #hwShell[data-view] .hwx-map-stage{min-height:0}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-column{flex:none;width:100%;gap:10px}
+ .hw-dashboard #hwShell[data-view] #hwxOtherFieldPanel{flex:0 0 auto}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:10px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat{grid-template-columns:36px minmax(0,1fr);min-height:98px;gap:3px 8px;padding:10px 8px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat>span:not(.hwx-stat-icon){grid-column:2;grid-row:1;font-size:13px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat>strong{grid-column:2;grid-row:2;font-size:26px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat>small{grid-column:1/-1;grid-row:3}
+ .hw-dashboard #hwShell[data-view] #hwxRegionButtons{flex:0 0 auto;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:minmax(44px,auto);gap:7px;padding:10px}
+ .hw-dashboard #hwShell[data-view] .hwx-region-buttons button{min-height:44px;font-size:14px}
+ .hw-dashboard #hwShell[data-view][data-company="DW1"] #hw-weather-databox{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:10px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-widget{min-height:154px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .hw-dashboard #hwShell[data-view] #hwxRightRail{flex:none;width:100%;min-width:0;overflow:visible}
+ .hw-dashboard #hwShell[data-view="admin"][data-season="def"] #hwxRightRail{display:none}
+ .hw-dashboard #hwShell[data-view] #hwRight{width:100%;min-width:0;overflow:visible}
+ .hw-dashboard #hwShell[data-view] .hw-agg>.hwx-table-scroll{overflow-x:auto;max-width:100%}
+}
+@media(max-width:520px){
+ .hw-dashboard #hwShell[data-view] .hw-body{padding:8px;gap:10px}
+ .hw-dashboard #hwShell[data-view] #hwMapPanel{height:320px;min-height:320px}
+ .hw-dashboard #hwShell[data-view] .hw-mapbar{left:8px;right:8px;max-width:calc(100% - 16px);padding:4px;gap:3px;border-radius:12px}
+ .hw-dashboard #hwShell[data-view] .mapbar-crumb{max-width:95px;padding:0 3px;font-size:12px}
+ .hw-dashboard #hwShell[data-view] .hw-weather-chip{left:8px;max-width:calc(100% - 16px);gap:5px;font-size:12px}
+ .hw-dashboard #hwShell[data-view] .hwx-panel-head{flex-wrap:wrap;padding:10px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-content{gap:7px;padding:8px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat{gap:3px 6px;padding:9px 6px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-row{grid-template-columns:26px minmax(0,1fr) auto;gap:4px;padding:8px 5px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-symbol{width:26px;height:26px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-count{font-size:18px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-widget{min-height:152px;padding:8px 3px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .w-head{font-size:13px;line-height:18px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-gauge svg{width:74px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-val{font-size:22px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-badge{padding:2px 5px;font-size:11px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts{grid-template-columns:minmax(0,1fr);padding:8px 10px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-row{grid-template-columns:36px minmax(0,1fr) auto;min-height:86px;padding:10px;gap:5px 8px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-symbol{width:36px;height:36px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-name{font-size:14px}
+ .hw-dashboard #hwShell[data-view] #hwRight{padding:10px}
+ .hw-dashboard #hwShell[data-view] .hw-agg-table{min-width:480px}
+}
+
+/* Seasonal monitoring keeps the existing regional/headquarters tables on the right. */
+@media(min-width:1200px){
+ .hw-dashboard #hwShell[data-view][data-season="summer"] .hw-body,
+ .hw-dashboard #hwShell[data-view][data-season="winter"] .hw-body{grid-template-columns:minmax(0,2.125fr) minmax(0,1fr)}
+}
+
+/* Desktop cards stay compact while long content can grow and scroll. */
+@media(min-width:1200px){
+ .hw-dashboard #hwShell[data-view] .hwx-panel-head{min-height:36px;padding:7px 10px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-content{gap:8px;padding:8px}
+ .hw-dashboard #hwShell[data-view] .hwx-stats{gap:6px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat{min-height:76px;padding:7px 8px;gap:2px 7px}
+ .hw-dashboard #hwShell[data-view="admin"] .hwx-stat{min-height:72px;padding:7px 10px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat>strong{font-size:24px}
+ .hw-dashboard #hwShell[data-view] .hwx-stat>small{font-size:12px;line-height:1.3}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-alerts{gap:6px}
+ .hw-dashboard #hwShell[data-view] .hwx-overview-alerts .hwx-alert-row{min-height:48px;padding:6px}
+ .hw-dashboard #hwShell[data-view] #hwxOtherFieldPanel .hwx-panel-head{min-height:36px;padding:7px 10px}
+ .hw-dashboard #hwShell[data-view] .hwx-weather-title{min-height:34px;padding:6px 10px}
+ .hw-dashboard #hwShell[data-view] .hw-legendbar{gap:6px 10px;padding:6px 10px}
+ .hw-dashboard #hwShell[data-view] .hw-legend{gap:4px 10px}
+ .hw-dashboard #hwShell[data-view][data-company="DW1"] #hw-weather-databox{gap:6px;padding:6px 8px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-widget{min-height:130px;padding:6px 4px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .w-head{min-height:30px;font-size:13px;line-height:16px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-gauge svg{width:80px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .g-sub{font-size:12px;line-height:1.35}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .hwx-precip-icon{width:32px;height:32px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .hw-rain{min-height:74px}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-val{font-size:24px;margin:6px 0}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-max{font-size:12px;line-height:1.3}
+ .hw-dashboard #hwShell[data-view] #hw-weather-databox .feels-badge{font-size:12px;margin-top:3px;line-height:1.35}
+ .hw-dashboard #hwShell[data-view] .hwx-weather-sources{gap:2px;padding:4px 10px}
+ .hw-dashboard #hwShell[data-view] .hwx-weather-sources .hwx-footnote{font-size:12px;line-height:1.3}
+ .hw-dashboard #hwShell[data-view] #hwxMajorAlertPanel .hwx-panel-head{min-height:36px;padding:7px 10px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts{gap:8px;padding:6px 10px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-row{min-height:72px;padding:7px 8px;gap:3px 6px;grid-template-rows:minmax(18px,auto) minmax(16px,auto) minmax(15px,auto)}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-name{font-size:13px}
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-alert-regions,
+ .hw-dashboard #hwShell[data-view] .hwx-major-alerts .hwx-report-note{font-size:12px;line-height:1.3}
+ .hw-dashboard #hwShell[data-view] #hwxMajorAlertPanel>.hwx-footnote{padding:4px 10px;font-size:12px;line-height:1.3}
+}
+
+/* 현장 화면의 지도 / 선택 현장 정보 배치는 유지하고, 혹서기·혹한기 집계표는 공통으로 표시한다.
+   DOM과 기존 렌더러를 재사용하며 조회 범위는 변경하지 않는다. */
+.hw-dashboard #hwShell[data-view="general"] .hw-body{grid-template-columns:minmax(0,1fr)}
+.hw-dashboard #hwShell[data-view="general"] .hw-left{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto minmax(122px,1fr) auto}
+.hw-dashboard #hwShell[data-view="general"] .hw-left-top,
+.hw-dashboard #hwShell[data-view="general"] .hwx-overview-column{display:contents}
+.hw-dashboard #hwShell[data-view="general"] #hwMapPanel{grid-column:1;grid-row:1/4;min-height:520px}
+.hw-dashboard #hwShell[data-view="general"] #hwxSelectedAlertPanel{display:flex;flex-direction:column;grid-column:2;grid-row:1;height:auto;min-height:144px;max-height:240px;overflow:hidden}
+.hw-dashboard #hwShell[data-view="general"] #hwxSelectedAlerts{padding:8px 12px 12px}
+.hw-dashboard #hwShell[data-view="general"] #hwWeatherPanel{grid-column:2;grid-row:2;container:weather-detail / inline-size}
+.hw-dashboard #hwShell[data-view="general"] #hwxOtherFieldPanel{grid-column:2;grid-row:3}
+.hw-dashboard #hwShell[data-view="general"] #hwxMajorAlertPanel{grid-column:1/-1;grid-row:4}
+.hw-dashboard #hwShell[data-view="general"] #hwxOverviewPanel,
+.hw-dashboard #hwShell[data-view="general"][data-season="def"] #hwxRightRail{display:none}
+
+/* 계절 집계표로 기상정보 영역이 좁아지면 위젯을 두 줄로 표시한다. */
+@container weather-detail (max-width:680px){
+ .hw-dashboard #hwShell[data-view="general"][data-season="summer"][data-company="DW1"] #hw-weather-databox,
+ .hw-dashboard #hwShell[data-view="general"][data-season="winter"][data-company="DW1"] #hw-weather-databox{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
+@media(max-width:1199px) and (min-width:801px){
+ .hw-dashboard #hwShell[data-view="general"][data-company="DW1"] #hw-weather-databox{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:800px){
+ .hw-dashboard #hwShell[data-view="general"] .hw-left{grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:10px}
+ .hw-dashboard #hwShell[data-view="general"] #hwMapPanel{grid-column:1;grid-row:1;min-height:360px}
+ .hw-dashboard #hwShell[data-view="general"] #hwxSelectedAlertPanel{grid-column:1;grid-row:2;min-height:144px}
+ .hw-dashboard #hwShell[data-view="general"] #hwWeatherPanel{grid-column:1;grid-row:3}
+ .hw-dashboard #hwShell[data-view="general"] #hwxOtherFieldPanel{grid-column:1;grid-row:4}
+ .hw-dashboard #hwShell[data-view="general"] #hwxMajorAlertPanel{grid-column:1;grid-row:5}
+}
+
+/* 상단 현황과 같은 현장 목록을 본부별로 나눠 표시한다. 계절별 체감온도 표는 유지한다. */
+.hw-dashboard #hwShell[data-view] .hwx-bottom-overview{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:var(--hw-layout-gap);min-width:0;flex:0 0 auto;align-items:stretch}
+.hw-dashboard #hwShell[data-view] #hwxHqOverviewPanel{display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff;color:#25334a;border:1px solid #dce3eb;border-radius:8px;overflow:hidden}
+.hw-dashboard #hwShell[data-view] #hwxHqOverview{padding:8px 10px;min-width:0;overflow-x:auto}
+.hw-dashboard #hwShell[data-view] #hwxHqOverview .hwx-table-overview{font-size:13px;table-layout:fixed}
+.hw-dashboard #hwShell[data-view] #hwxHqOverview th,
+.hw-dashboard #hwShell[data-view] #hwxHqOverview td{padding:2px 4px;vertical-align:middle;line-height:1.4}
+.hw-dashboard #hwShell[data-view] #hwxHqOverview th:first-child{width:34%}
+.hw-dashboard #hwShell[data-view] #hwxHqOverview tbody th{background:#fff;text-align:left;font-weight:500}
+.hw-dashboard #hwShell[data-view] #hwxHqOverview .hwx-total-row th,
+.hw-dashboard #hwShell[data-view] #hwxHqOverview .hwx-total-row td{background:#edf3fa;font-weight:700}
+.hw-dashboard #hwShell[data-view] .hwx-count-pending{display:block;color:#64748b;font-size:11px;font-weight:400}
+.hw-dashboard #hwShell[data-view="admin"] .hwx-bottom-overview .hwx-major-alerts{grid-template-columns:minmax(0,1fr)}
+.hw-dashboard #hwShell[data-view="admin"] .hwx-bottom-overview #hwxMajorAlertPanel{display:flex}
+.hw-dashboard #hwShell[data-view="admin"] .hwx-bottom-overview .hwx-major-alerts .hwx-alert-row{min-height:68px;grid-template-columns:36px minmax(0,1fr) auto}
+.hw-dashboard #hwShell[data-view="general"] .hwx-bottom-overview{display:contents}
+.hw-dashboard #hwShell[data-view="general"] #hwxHqOverviewPanel{display:none}
+@media(max-width:800px){
+ .hw-dashboard #hwShell[data-view="admin"] .hwx-bottom-overview{grid-template-columns:minmax(0,1fr)}
+ .hw-dashboard #hwShell[data-view] #hwxHqOverview .hwx-table-overview{font-size:12px}
+ .hw-dashboard #hwShell[data-view] #hwxHqOverview th,
+ .hw-dashboard #hwShell[data-view] #hwxHqOverview td{padding:7px 3px}
+}
+@media(max-width:520px){
+ .hw-dashboard #hwShell[data-view="general"] #hwMapPanel{min-height:320px}
+}

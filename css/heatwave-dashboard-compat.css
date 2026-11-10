@@ -1,0 +1,765 @@
+/* Original renderer compatibility styles.
+ * Extracted from the supplied JSP; loaded before the redesigned UI stylesheet.
+ * Keep until the original heatwave-dashboard-app.js markup is audited.
+ */
+
+	/* 라이트 테마 (2p 디자인 매칭) : 흰 배경 + 라이트블루 액센트. 등급 5색·게이지 수치색은 유지 */
+	* { box-sizing: border-box; }
+	html, body { margin:0; padding:0; height:100%; font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif; background:#23252B; color:#1F2937; }	/* 외곽 = 헤더와 동일 관제색(#23252B) */
+	.hw-wrap { display:flex; flex-direction:column; height:100vh; }
+	/* 헤더 : 흰 바 + 옅은 보더 */
+	/* 헤더 : 기존 관제 다크모드 톤 */
+	.hw-top { display:flex; align-items:center; gap:16px; height:64px; padding:0 20px; background:#23252B; box-shadow:0 3px 8px rgba(0,0,0,.3); position:relative; z-index:10; }
+	.hw-title { margin:0; font-size:21px; font-weight:500; color:#fff; }
+	.hw-top-right { margin-left:auto; display:flex; align-items:center; gap:14px; color:rgba(208,210,214,.9); }
+	.hw-musa-btn { display:none; padding:6px 14px; border:1px solid #3a3d45; background:#2b2e36; color:rgba(208,210,214,.9); border-radius:4px; font-size:13px; text-decoration:none; }
+	.hw-musa-btn:hover { background:#343843; color:#fff; }
+	.hw-datetime { font-size:14px; color:#cfd6df; background:rgba(255,255,255,.08); padding:5px 12px; border-radius:16px; }
+	.hw-toggle button { padding:6px 14px; border:1px solid #3a3d45; background:#2b2e36; color:rgba(208,210,214,.85); cursor:pointer; font-size:13px; }
+	.hw-toggle button:first-child { border-radius:4px 0 0 4px; }
+	.hw-toggle button:last-child { border-radius:0 4px 4px 0; border-left:0; }
+	.hw-toggle button.on { background:#1E6FE0; color:#fff; border-color:#1E6FE0; }
+	.hw-full-btn { display:inline-flex; align-items:center; justify-content:center; width:34px; height:32px; padding:0; border:1px solid #3a3d45; background:#2b2e36; border-radius:4px; cursor:pointer; }
+	.hw-full-btn:hover { background:#343843; }
+	.hw-full-btn svg { width:17px; height:17px; fill:rgba(208,210,214,.9); }
+	.hw-body { flex:1; display:flex; min-height:0; padding:12px; gap:12px; }	/* 포틀릿 간격 */
+	.hw-left { position:relative; flex:1 1 70%; display:flex; flex-direction:column; min-width:0; /*background:#fff;*/ border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(17,24,39,.1); }	/* 지도 포틀릿 카드 */
+	.hw-left-top { position:relative; margin-bottom: 10px; flex:1 1 70%; display:flex; min-width:0; /*background:#fff;*/ border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(17,24,39,.1); }
+	.hw-left-top-left { position:relative; display:flex; flex-direction:column; width: 70%;  min-width:0; /*background:#fff;*/ border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(17,24,39,.1);}
+	.hw-left-top-right { position:relative; margin-left: 10px; display:flex; flex-direction:column; width: 30%;  min-width:0; /*background:#fff;*/ border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(17,24,39,.1);}
+	.hw-field-label { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#1F2937; font-size:18px; font-weight:600; }	/* 범례바 좌측 — 선택 현장명+등급 */
+	.hw-mapbar { position:absolute; top:10px; left:12px; z-index:6; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.95); border:1px solid #E3E8EF; border-radius:20px; padding:4px 6px; box-shadow:0 1px 3px rgba(17,24,39,.1); }
+	.mapbar-btn { display:inline-flex; align-items:center; justify-content:center; height:26px; min-width:26px; padding:0 9px; border:0; border-radius:14px; background:#1E6FE0; color:#fff; font-size:12px; cursor:pointer; }
+	.mapbar-btn svg { width:15px; height:15px; fill:#fff; }
+	.mapbar-crumb { font-size:13px; color:#1F2937; padding:0 6px; white-space:nowrap; }
+	.mapbar-crumb .crumb-sep { color:#9CA3AF; margin:0 3px; }
+	.hw-weather-chip { position:absolute; top:10px; right:12px; z-index:6; display:flex; align-items:center; gap:7px; background:rgba(255,255,255,.95); border:1px solid #E3E8EF; border-radius:18px; padding:5px 12px; font-size:13px; color:#1F2937; box-shadow:0 1px 3px rgba(17,24,39,.1); }
+	.hw-weather-chip .wc-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+	.hw-weather-chip .wc-time { color:#6B7280; font-size:12px; white-space:nowrap; }
+	.hw-map { flex:1; min-height:0; }
+	.hw-sido-label { font-size:12px; font-weight:500; color:#46586A; white-space:nowrap; pointer-events:none; text-shadow:0 0 3px #fff, 0 0 3px #fff; }	/* 면 위 시도명 */
+	.hw-legendbar { margin-top: 10px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 14px; background:#FFFFFF; border-top:1px solid #E3E8EF; }	/* 좌:현장라벨 / 우:범례 */
+	.hw-legend { display:flex; flex:0 0 auto; gap:14px; margin:0; padding:0; list-style:none; font-size:12px; color:#1F2937; flex-wrap:wrap; justify-content:flex-end; }
+	.hw-legend li { display:flex; align-items:center; gap:5px; }
+	.hw-legend .dot { width:12px; height:12px; border-radius:50%; display:inline-block; }
+	.hw-widgets { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; padding:10px 14px; background:#F4F7FB; border-top:1px solid #E3E8EF; min-height:118px; }
+	.hw-widgets2 { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:10px 14px; background:#F4F7FB; border-top:1px solid #E3E8EF; min-height:118px; }
+	.hw-widget { background:#FFFFFF; border:1px solid #E3E8EF; border-radius:8px; padding:8px 6px 6px; text-align:center; display:flex; flex-direction:column; align-items:center; }
+
+	.hw-widget2 {
+		--status-color: #74d6aa;
+		--face-ink: #174d3b;
+
+		background: #FFFFFF;
+		border: 1px solid #E3E8EF;
+		min-height: 35%;
+		border-radius: 8px;
+		padding: 8px 6px 6px;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		text-align: left;
+	}
+	.hw-widget3 { background:#FFFFFF; border:1px solid #E3E8EF; margin: 10px 0 10px 0; min-height: 33%; border-radius:8px; padding:10px 14px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content: center; }
+	.hw-widget3 .hw-widget3__title {
+	align-self: flex-start;
+	margin: 0 0 12px;
+	color: #333;
+	font-weight: 700;
+	text-align: left;
+	}
+	.hw-widget3 .site-info {
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0;
+	padding: 2px 14px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	text-align: left;
+	}
+
+	.hw-widget3 .site-info__item {
+	display: flex;
+	flex-direction: column;
+	margin: 10px 0px 10px 0px;
+	gap: 6px;
+	min-width: 0;
+	}
+
+	.hw-widget3 .site-info dt {
+	margin: 0;
+	color: #333;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.4;
+	}
+
+	.hw-widget3 .site-info dd {
+		margin: 0;
+		padding-left: 8px;
+		color: #888;
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 1.4;
+		overflow-wrap: anywhere;
+	}
+	.hw-widget4 {
+		--status-color: #74d6aa;
+		--face-ink: #174d3b;
+		padding: 8px 12px 8px 12px !important;
+		box-sizing: border-box;
+		width: 100%;
+		background: #FFFFFF;
+		border: 1px solid #E3E8EF;
+		min-height: 15%;
+		border-radius: 8px;
+		padding: 8px 6px 6px;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		text-align: left;
+	}
+
+	.hw-widget4 .weather-icon {
+		--size: 30px;
+
+		flex-shrink: 0;
+		color: var(--alert-color);
+		background: var(--alert-bg);
+	}
+
+	.hw-widget4__content {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.hw-widget4__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+
+		color: #333;
+		font-size: 14px;
+		line-height: 1.4;
+	}
+
+	.hw-widget4__header strong {
+		font-weight: 700;
+	}
+
+	.hw-widget4__header strong:last-child {
+		flex-shrink: 0;
+	}
+
+	.hw-widget4__regions {
+		color: #888;
+		font-size: 12px;
+		font-weight: 600;
+		line-height: 1.4;
+		overflow-wrap: anywhere;
+		width: 100%;
+  		text-align: right;
+	}
+
+	/* 주의보 */
+	.hw-widget4--advisory {
+		--alert-color: #ed983b;
+		--alert-bg: #fff3df;
+	}
+
+	/* 경보 */
+	.hw-widget4--warning {
+		--alert-color: #ef554b;
+		--alert-bg: #fff0ee;
+	}
+	.hw-widget .w-head { font-size:12px; color:#374151; margin-bottom:2px; }
+	.hw-widget .w-head { font-size:12px; color:#374151; margin-bottom:2px; }
+	.hw-gauge { display:flex; flex-direction:column; align-items:center; }
+	.hw-gauge svg { width:84px; height:74px; }
+	.hw-gauge .g-sub { font-size:11px; color:#6B7280; margin-top:-6px; }
+	.hw-rain { display:flex; flex-direction:column; align-items:center; justify-content:center; height:74px; }
+	.hw-rain .rain-ico { font-size:24px; line-height:1; color:#3B9AE1; }
+	.hw-rain .rain-val { font-size:15px; font-weight:700; margin:4px 0 2px; color:#1F2937; }
+	.hw-rain .g-sub { font-size:11px; color:#6B7280; }
+	.hw-feels { justify-content:center; border-width:2px !important; }
+	.hw-feels .feels-val { font-size:26px; font-weight:800; margin:6px 0; line-height:1; }
+	.hw-feels .feels-unit { font-size:13px; font-weight:600; margin-left:2px; }
+	.hw-feels .feels-max { font-size:11px; color:#6B7280; margin:-2px 0 3px; font-weight:600; }	/* 당일최대 체감온도 (현재 체감 아래) */
+	.hw-feels .feels-badge { font-size:11px; font-weight:700; color:#fff; padding:2px 8px; border-radius:10px; }
+	.hw-right { flex:0 0 32%; max-width:32%; display:flex; flex-direction:column; overflow:auto; background:#FFFFFF; border-radius:10px; box-shadow:0 1px 4px rgba(17,24,39,.1); padding:12px; scrollbar-width:thin; scrollbar-color:#b0b5bb rgba(149,155,163,.1); }	/* 집계 포틀릿 카드 (자동맞춤: 표가 높이 채움) */
+	/* 관제 표준 스크롤바 (overflow-scroll-01 톤) — 우측 패널 + 팝업 리스트 */
+	.hw-right::-webkit-scrollbar, .hw-modal-list::-webkit-scrollbar { width:8px; height:8px; }
+	.hw-right::-webkit-scrollbar-thumb, .hw-modal-list::-webkit-scrollbar-thumb { background:#b0b5bb; border-radius:10px; cursor:pointer; }
+	.hw-right::-webkit-scrollbar-track, .hw-modal-list::-webkit-scrollbar-track { background:rgba(149,155,163,.1); }
+	.hw-agg { display:flex; flex-direction:column; margin-bottom:10px; }	/* 자동맞춤: 두 표가 패널 높이를 나눠 채움(전체화면/창모드 자동) */
+	#hwRegionPanel { flex:19 1 auto; }	/* 지역(헤더+17+계≈19행) */
+	#hwHqPanel { flex:7 1 auto; margin-bottom:0; }	/* 대우 본부(헤더+계 포함≈7행) */
+	.hw-right.hw-layout-alert { overflow:hidden; }
+	/* 지역별 현황은 기존 높이를 유지하고, 기상특보만 하단 한 줄 카드로 축소한다. */
+	.hw-right.hw-layout-alert #hwRegionPanel { flex:1 1 auto; min-height:0; overflow:visible; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #E3E8EF; }
+	.hw-right.hw-layout-alert #hwRegionPanel .hw-agg-table { flex:1 1 auto; height:100%; }
+	.hw-right.hw-layout-alert #hwAlertPanel { display:flex; flex:0 0 132px; min-height:0; }
+	.hw-right.hw-layout-alert .hw-alert-grid { grid-template-columns:repeat(6,minmax(0,1fr)); grid-template-rows:minmax(0,1fr); gap:4px; }
+	.hw-right.hw-layout-alert .hw-alert-item { gap:3px; padding:5px; }
+	.hw-right.hw-layout-alert .hw-alert-detail { font-size:9px; }
+	.hw-right.hw-layout-single #hwRegionPanel { flex:1 1 auto; margin-bottom:0; }
+	.hw-agg h2 { flex:0 0 auto; font-size:18px; margin:0 0 8px; color:#1F2937; font-weight:600; }
+	.hw-agg-table { flex:1 1 auto; height:100%; width:100%; table-layout:fixed; border-collapse:collapse; font-size:12px; }
+	.hw-agg-table th:first-child, .hw-agg-table td:first-child { width:30%; }	/* 구분 (아이콘+지역명+특보뱃지) */
+	.hw-agg-table th:last-child,  .hw-agg-table td:last-child  { width:8%; }	/* 계 */
+	.hw-agg-table th, .hw-agg-table td { border:1px solid #E3E8EF; padding:3px 6px; text-align:center; vertical-align:middle; word-break:keep-all; }
+	.hw-agg-table th { background:#F4F7FB; color:#374151; }
+	.hw-agg-table th.hw-gth, .hw-agg-table th.hw-gth-all { cursor:pointer; }	/* 등급 헤더·계 헤더 클릭(현장목록 팝업) */
+	.hw-agg-table th.hw-gth:hover, .hw-agg-table th.hw-gth-all:hover { filter:brightness(1.08); }
+	.hw-agg-table tr.hw-sum td { cursor:pointer; }				/* 계(합계)행 클릭 → 등급/전체 현장목록 */
+	.hw-agg-table tr.hw-sum td:hover { background:#CBD7E6; }
+	.hw-agg-table tbody tr.clickable { cursor:pointer; }
+	.hw-agg-table tbody tr.clickable:hover { background:#EDF5FC; }
+	.hw-agg-table .hw-rgn { vertical-align:middle; }
+	.hw-agg-table .hw-rgn-empty { color:#1F2937; }				/* 현장 없는 지역도 일반색 (회색 X) */
+	.hw-agg-table tbody tr.empty td { color:#1F2937; }
+	.hw-agg-table .hw-wt { width:16px; height:16px; vertical-align:-3px; margin:0 4px; }	/* 지역명과 특보뱃지 사이 (이름→아이콘→뱃지) */
+	.hw-badge { display:inline-block; margin-left:5px; padding:1px 5px; border-radius:8px; font-size:10px; font-weight:700; line-height:1.6; white-space:nowrap; }
+	.hw-agg-table tbody tr.hw-sum td { background:#DCE9F5; font-weight:700; border-top:2px solid #CBD5E1; color:#1F2937; }
+	.hw-alert { display:none; min-height:0; flex-direction:column; margin-bottom:0; }
+	.hw-alert-head { display:flex; align-items:flex-end; justify-content:space-between; gap:8px; margin-bottom:8px; }
+	.hw-alert-head h2 { margin:0; font-size:18px; color:#1F2937; font-weight:600; }
+	.hw-alert-area { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#6B7280; font-size:11px; text-align:right; }
+	.hw-alert-grid { flex:1 1 auto; min-height:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:repeat(2,minmax(0,1fr)); gap:7px; }
+	.hw-alert-loading { grid-column:1/-1; grid-row:1/-1; display:flex; align-items:center; justify-content:center; }
+	.hw-alert-item { min-width:0; display:flex; flex-direction:column; justify-content:center; gap:5px; padding:8px; border:1px solid #E3E8EF; border-radius:8px; background:#F8FAFC; }
+	.hw-alert-name { color:#374151; font-size:13px; font-weight:700; }
+	.hw-alert-status { align-self:flex-start; padding:2px 7px; border-radius:10px; background:#E5E7EB; color:#6B7280; font-size:11px; font-weight:700; }
+	.hw-alert-detail { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#6B7280; font-size:10px; }
+	.hw-alert-item.hw-alert-watch { border-color:#F4C542; background:#FFF9DB; }
+	.hw-alert-item.hw-alert-watch .hw-alert-status { background:#F4C542; color:#3D3200; }
+	.hw-alert-item.hw-alert-warning { border-color:#E53935; background:#FFF0EF; }
+	.hw-alert-item.hw-alert-warning .hw-alert-status { background:#E53935; color:#FFFFFF; }
+	.hw-alert-item.hw-alert-error { border-color:#CBD5E1; background:#F8FAFC; }
+	.hw-marker { position:relative; width:16px; height:16px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 4px rgba(17,24,39,.4); cursor:pointer; }
+	.hw-marker-sel { width:20px; height:20px; box-shadow:0 0 0 3px #fff, 0 2px 8px rgba(17,24,39,.5); }	/* 현재위치 강조 : 흰 후광 */
+	.hw-marker-sel::after { content:''; position:absolute; left:50%; top:50%; width:20px; height:20px; border-radius:50%; border:2px solid var(--mk,#E53935); transform:translate(-50%,-50%); animation:hw-ping 1.4s ease-out infinite; pointer-events:none; }	/* 레이더 핑 링 */
+	@keyframes hw-ping { 0% { transform:translate(-50%,-50%) scale(1); opacity:.75; } 100% { transform:translate(-50%,-50%) scale(3.2); opacity:0; } }
+	.hw-todo { color:#9CA3AF; font-size:12px; padding:10px; }
+	.hw-modal { position:fixed; inset:0; z-index:50; background:rgba(17,24,39,.35); display:flex; align-items:center; justify-content:center; }
+	.hw-modal-box { width:360px; max-height:70vh; display:flex; flex-direction:column; background:#FFFFFF; border:1px solid #E3E8EF; border-radius:8px; overflow:hidden; box-shadow:0 8px 24px rgba(17,24,39,.18); }
+	.hw-modal-head { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#F4F7FB; font-weight:500; color:#1F2937; }
+	.hw-modal-head button { background:none; border:0; color:#6B7280; font-size:20px; cursor:pointer; }
+	.hw-modal-search { padding:8px 12px; border-bottom:1px solid #E3E8EF; }
+	.hw-modal-search input { width:100%; box-sizing:border-box; padding:7px 10px; border:1px solid #CBD5E1; border-radius:6px; font-size:13px; color:#1F2937; outline:none; }
+	.hw-modal-search input:focus { border-color:#1E6FE0; }
+	.hw-modal-list { list-style:none; margin:0; padding:6px 0; overflow-y:auto; max-height:380px; scrollbar-width:thin; scrollbar-color:#b0b5bb rgba(149,155,163,.1); }	/* ~10개 후 스크롤 */
+	.hw-modal-list li { display:flex; align-items:center; gap:8px; padding:8px 14px; cursor:pointer; font-size:13px; }
+	.hw-modal-list li:hover { background:#EDF5FC; }
+	.hw-modal-list li.hw-modal-empty { justify-content:center; color:#9CA3AF; cursor:default; }
+	.hw-modal-list li.hw-modal-empty:hover { background:none; }
+	.hw-modal-list .dot { width:11px; height:11px; border-radius:50%; flex:0 0 auto; }
+	.hw-widget2.hw-widget2--alert {
+	--alert-color: #ff594a;
+
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 56px;
+	padding: 6px 12px;
+	border: 1px solid #e3e8ef;
+	border-radius: 6px;
+	background: #fff;
+
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
+	gap: 4px;
+	text-align: left;
+	}
+
+	.weather-alert__title {
+	color: #333;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 16px;
+	}
+
+	.weather-alert__row {
+	display: flex;
+	align-items: center;
+	margin : 20px 0px 20px 0px;
+	gap: 6px;
+	min-width: 0;
+	}
+
+	/* 기존 태양 아이콘 사용, 원형 배경 제거 */
+	.hw-widget2.hw-widget2--alert {
+	min-height: 35%;
+	padding: 10px 14px;
+	gap: 8px;
+	}
+
+	.hw-widget2--alert .weather-alert__title,
+	.hw-widget3 .hw-widget3__title {
+	font-size: 16px;
+	line-height: 1.4;
+	}
+
+	.hw-widget2--alert .weather-alert__name {
+	font-size: 16px;
+	line-height: 1.4;
+	}
+
+	.hw-widget2--alert .weather-alert__row {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	}
+
+	.hw-widget2--alert .weather-alert__state {
+	margin-left: auto;
+	flex-shrink: 0;
+	white-space: nowrap;
+	}
+
+	.hw-widget2--alert .weather-icon {
+	--size: 28px;
+	}
+		/* 상태별 아이콘과 글자 색상 */
+		.hw-widget2.air-status--normal {
+		--status-color: #74d6aa;
+		--face-ink: #174d3b;
+		}
+
+		.hw-widget2.air-status--good {
+		--status-color: #79caff;
+		--face-ink: #194b75;
+		}
+
+		.hw-widget2.air-status--bad {
+		--status-color: #ffb769;
+		--face-ink: #773e19;
+		}
+
+		.hw-widget2 .air-face {
+		--size: 48px;
+		--face: var(--status-color);
+		--ink: var(--face-ink);
+		flex-shrink: 0;
+		}
+
+		.hw-widget2__info {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		}
+
+		.hw-widget2__status {
+		color: var(--status-color);
+		font-size: 16px;
+		font-weight: 700;
+		line-height: 1.3;
+		}
+
+		.hw-widget2__value {
+		color: #25334a;
+		font-size: 20px;
+		font-weight: 700;
+		line-height: 1.3;
+		}
+
+		.hw-widget2__unit {
+		color: #64748b;
+		font-size: 12px;
+		font-weight: 400;
+		}
+
+	.hw-widget2.hw-widget2--air {
+		box-sizing: border-box;
+		width: 100%;
+		min-height: 14%;
+		padding: 10px 14px;
+		margin-bottom : 10px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 10px;
+		text-align: left;
+	}
+
+	.hw-widget2--air .air-face {
+		flex-shrink: 0;
+	}
+
+	.hw-widget2--air .hw-widget2__info {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.hw-widget2--air .hw-widget2__value {
+		margin-left: auto;
+		align-self: center;
+		flex-shrink: 0;
+		white-space: nowrap;
+	}
+	/* --size 값으로 아이콘 크기를 변경할 수 있습니다. */
+    .air-face {
+      --size: 96px;
+      --face: #74d6aa;
+      --ink: #174d3b;
+      position: relative;
+      display: inline-block;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      background: var(--face);
+      color: var(--ink);
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    .air-face--normal { --face: #74d6aa; --ink: #174d3b; }
+    .air-face--bad { --face: #ffb769; --ink: #773e19; }
+    .air-face--good { --face: #79caff; --ink: #194b75; }
+
+    .air-face__eyes::before,
+    .air-face__eyes::after {
+      content: "";
+      position: absolute;
+      top: 34%;
+      width: 7%;
+      height: 10%;
+      border-radius: 999px;
+      background: currentColor;
+    }
+    .air-face__eyes::before { left: 29%; }
+    .air-face__eyes::after { right: 29%; }
+
+    .air-face__mouth {
+      position: absolute;
+      left: 50%;
+      top: 61%;
+      width: 28%;
+      height: 5%;
+      transform: translateX(-50%);
+      background: currentColor;
+      border-radius: 999px;
+    }
+
+    /* 웃는 입 */
+    .air-face--good .air-face__mouth {
+      top: 53%;
+      width: 34%;
+      height: 22%;
+      box-sizing: border-box;
+      background: transparent;
+      border: calc(var(--size) * .045) solid currentColor;
+      border-top: 0;
+      border-radius: 0 0 999px 999px;
+    }
+
+    /* 아래로 처진 입 */
+    .air-face--bad .air-face__mouth {
+      top: 58%;
+      width: 30%;
+      height: 17%;
+      box-sizing: border-box;
+      background: transparent;
+      border: calc(var(--size) * .045) solid currentColor;
+      border-bottom: 0;
+      border-radius: 999px 999px 0 0;
+    }
+
+	/* 공통: 내부 도형은 em 단위로 함께 확대·축소됩니다. */
+.weather-icon {
+  --size: 48px;
+
+  position: relative;
+  display: inline-block;
+  width: var(--size);
+  height: var(--size);
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  vertical-align: middle;
+  font-size: var(--size);
+}
+
+.weather-icon *,
+.weather-icon *::before,
+.weather-icon *::after {
+  box-sizing: border-box;
+}
+
+.weather-icon i,
+.weather-icon b {
+  position: absolute;
+  display: block;
+}
+
+/* ── 폭염 ── */
+.weather-icon--heat {
+  color: #ed7832;
+  background: #fff1df;
+}
+
+.weather-icon--heat .sun {
+  top: 50%;
+  left: 50%;
+  width: .34em;
+  height: .34em;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.weather-icon--heat .sun::before,
+.weather-icon--heat .sun::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: .07em;
+  height: .13em;
+  margin: -.065em 0 0 -.035em;
+  border-radius: .04em;
+  box-shadow:
+    0 -.29em 0 currentColor,
+    0 .29em 0 currentColor;
+}
+
+.weather-icon--heat .sun::after {
+  transform: rotate(90deg);
+}
+
+/* 대각선 빛 */
+.weather-icon--heat::before,
+.weather-icon--heat::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: .07em;
+  height: .11em;
+  margin: -.055em 0 0 -.035em;
+  border-radius: .04em;
+  box-shadow:
+    0 -.29em 0 currentColor,
+    0 .29em 0 currentColor;
+  transform: rotate(45deg);
+}
+
+.weather-icon--heat::after {
+  transform: rotate(-45deg);
+}
+
+/* ── 호우 ── */
+.weather-icon--rain {
+  color: #438fd0;
+  background: #eaf4ff;
+}
+
+.weather-icon--rain .cloud {
+  top: .33em;
+  left: .19em;
+  width: .62em;
+  height: .23em;
+  border-radius: .15em;
+  background: currentColor;
+}
+
+.weather-icon--rain .cloud::before,
+.weather-icon--rain .cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.weather-icon--rain .cloud::before {
+  top: -.14em;
+  left: .10em;
+  width: .29em;
+  height: .29em;
+}
+
+.weather-icon--rain .cloud::after {
+  top: -.08em;
+  right: .07em;
+  width: .23em;
+  height: .23em;
+}
+
+.weather-icon--rain .rain-drops {
+  top: .63em;
+  left: .28em;
+  width: .055em;
+  height: .17em;
+  transform: rotate(20deg);
+  border-radius: .04em;
+  background: currentColor;
+  box-shadow:
+    .18em -.065em 0 currentColor,
+    .36em -.13em 0 currentColor;
+}
+
+/* ── 폭설 ── */
+.weather-icon--snow {
+  color: #559dc6;
+  background: #edf8ff;
+}
+
+.weather-icon--snow .snowflake {
+  inset: 0;
+}
+
+.weather-icon--snow .snowflake b {
+  top: .17em;
+  left: .475em;
+  width: .05em;
+  height: .66em;
+  border-radius: .03em;
+  background: currentColor;
+}
+
+.weather-icon--snow .snowflake b:nth-child(2) {
+  transform: rotate(60deg);
+}
+
+.weather-icon--snow .snowflake b:nth-child(3) {
+  transform: rotate(120deg);
+}
+
+.weather-icon--snow .snowflake b::before,
+.weather-icon--snow .snowflake b::after {
+  content: "";
+  position: absolute;
+  left: -.065em;
+  width: .18em;
+  height: .18em;
+  border-right: .04em solid currentColor;
+  border-bottom: .04em solid currentColor;
+}
+
+.weather-icon--snow .snowflake b::before {
+  top: .015em;
+  transform: rotate(45deg);
+}
+
+.weather-icon--snow .snowflake b::after {
+  bottom: .015em;
+  transform: rotate(225deg);
+}
+
+/* ── 한파 ── */
+.weather-icon--cold {
+  color: #6779d6;
+  background: #eff0ff;
+}
+
+.weather-icon--cold .thermometer {
+  top: .15em;
+  left: .40em;
+  width: .20em;
+  height: .56em;
+  border: .045em solid currentColor;
+  border-radius: .12em .12em 0 0;
+  background: #fff;
+}
+
+.weather-icon--cold .thermometer::before {
+  content: "";
+  position: absolute;
+  top: .22em;
+  left: 50%;
+  width: .055em;
+  height: .28em;
+  transform: translateX(-50%);
+  border-radius: .04em;
+  background: currentColor;
+}
+
+.weather-icon--cold .thermometer::after {
+  content: "";
+  position: absolute;
+  bottom: -.14em;
+  left: 50%;
+  width: .28em;
+  height: .28em;
+  transform: translateX(-50%);
+  border: .045em solid currentColor;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: inset 0 0 0 .035em #fff;
+}
+
+/* 온도계 눈금 */
+.weather-icon--cold::after {
+  content: "";
+  position: absolute;
+  top: .28em;
+  left: .65em;
+  width: .10em;
+  height: .035em;
+  border-radius: .02em;
+  background: currentColor;
+  box-shadow:
+    0 .12em 0 currentColor,
+    0 .24em 0 currentColor;
+}
+
+/* ── 건조 ── */
+.weather-icon--dry {
+  color: #b88343;
+  background: #faf0df;
+}
+
+.weather-icon--dry .dry-ground {
+  top: .27em;
+  left: .17em;
+  width: .66em;
+  height: .48em;
+  overflow: hidden;
+  border: .035em solid currentColor;
+  border-radius: .08em;
+  background: #e6c794;
+}
+
+/* 갈라진 땅의 중앙 균열 */
+.weather-icon--dry .dry-ground b:nth-child(1) {
+  top: -.02em;
+  left: .28em;
+  width: .035em;
+  height: .52em;
+  transform: rotate(18deg);
+  background: currentColor;
+}
+
+/* 좌우로 뻗은 균열 */
+.weather-icon--dry .dry-ground b:nth-child(2) {
+  top: .18em;
+  left: -.03em;
+  width: .35em;
+  height: .035em;
+  transform: rotate(25deg);
+  background: currentColor;
+}
+
+.weather-icon--dry .dry-ground b:nth-child(3) {
+  top: .25em;
+  left: .27em;
+  width: .38em;
+  height: .035em;
+  transform: rotate(-30deg);
+  background: currentColor;
+}
